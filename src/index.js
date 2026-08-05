@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import productRoutes from './routes/product.routes.js';
 
 dotenv.config();
 
@@ -20,7 +21,9 @@ app.get('/', (req, res) => {
   });
 });
 
-// Puerto de escucha del servidor
+// Ruta del módulo de Productos 
+app.use('/api/v1/products', productRoutes);
+
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
