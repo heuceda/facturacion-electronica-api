@@ -6,11 +6,10 @@ USE `facturacion_electronica_db`;
 -- =========================================================================
 
 CREATE TABLE IF NOT EXISTS `users` (
-`id` binary(16) NOT NULL,
+`id` INT AUTO_INCREMENT PRIMARY KEY,
 `name` varchar(100) NOT NULL,
 `email` varchar(100) NOT NULL,
 `password_hash` varchar(255) NOT NULL,
 `role` ENUM (`CASHIER`, `ADMIN`) NOT NULL DEFAULT `CASHIER`,
 `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-PRIMARY KEY (`id`),
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
