@@ -1,0 +1,18 @@
+services:
+  facturacion_electronica_db:
+    image: mysql:8.0
+    container_name: facturacion_electronica_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: facturacion_electronica_db
+      MYSQL_USER: unah
+      MYSQL_PASSWORD: unah2026
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+
+volumes:
+  db_data:
