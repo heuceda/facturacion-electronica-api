@@ -1,0 +1,33 @@
+
+GET http://localhost:3000/api/v1/invoices
+
+###
+
+
+GET http://localhost:3000/api/v1/invoices/1
+
+###
+
+
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Juan Pérez",
+    "customer_rtn_id": "08011990123456",
+    "items": [
+        {
+            "product_id": 1,
+            "quantity": 1
+        },
+        {
+            "product_id": 2,
+            "quantity": 2
+        }
+    ]
+}
+
+###
+
+
+PATCH http://localhost:3000/api/v1/invoices/1/void
