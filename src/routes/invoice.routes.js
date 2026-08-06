@@ -5,15 +5,18 @@ import {
     getInvoiceById,
     voidInvoice
 } from "../controllers/invoice.controller.js";
+import { isAuth} from "../middlewares/isAuth.js";
+import {isAdmin} from "../middlewares/isAdmin.js";
 
-const router = express.Router();
+const invoicerouter = express.Router();
 
-router.post("/", createInvoice);
+invoicerouter.post("/", isAuth, createInvoice);
 
-router.get("/", getInvoices);
+invoicerouter.get("/", isAuth, getInvoices);
 
-router.get("/:id", getInvoiceById);
+invoicerouter.get("/:id", isAuth, getInvoiceById);
 
-router.patch("/:id/void", voidInvoice);
+//solo para Admin
+invoicerouter.patch("/:id/void", isAuth, isAdmin, voidInvoice);
 
-export default router;
+export default invoicerouter;

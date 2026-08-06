@@ -1,16 +1,17 @@
 import { Router } from 'express';
 import { ProductController } from '../controllers/product.controller.js';
-import { authenticate, authorizeRoles } from '../middlewares/auth.middleware.js';
+import { isAdmin } from '../middlewares/isAdmin.js';
+import { isAuth } from '../middlewares/isAuth.js';
 
-const router = Router();
+const Productrouter = Router();
 
 // GET - Lista de productos activos
-router.get('/', ProductController.getProducts);
+Productrouter.get('/', ProductController.getProducts);
 
 // POST - Crear un producto nuevo
-router.post('/', authenticate, authorizeRoles('ADMIN'), ProductController.createProduct);
+Productrouter.post('/', isAuth, isAdmin, ProductController.createProduct);
 
 // PATCH - Aumentar inventario de un producto 
-router.patch('/:id/stock', authenticate, authorizeRoles('ADMIN'), ProductController.updateStock);
+Productrouter.patch('/:id/stock', isAuth, isAdmin, ProductController.updateStock);
 
 export default router;
