@@ -28,7 +28,7 @@ export const login = async (req, res) => {
             }))
         }
 
-        const isValid = await argon2.verify(data.password, user.password_hash)
+        const isValid = await argon2.verify(user.password_hash, data.password)
 
         if(!isValid){
             return res.status(401).json(jsonresponse({

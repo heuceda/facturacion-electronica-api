@@ -1,48 +1,64 @@
-import pool from '../config/db.js';
+import pool from '../db/db.js';
 
-export const ProductModel = {
+export default class ProductModel {
   
-  async getActiveProducts() {
-    const [rows] = await pool.query(
-      'SELECT id, code, name, price, stock, is_active, created_at FROM products WHERE is_active = TRUE ORDER BY id DESC'
-    );
-    return rows;
-  },
 
-  async getProductById(id) {
-    const [rows] = await pool.query('SELECT * FROM products WHERE id = ?', [id]);
-    return rows[0] || null;
-  },
+  static getActiveProducts = async () => {
 
-  // Buscar un producto por su código único
-  async getProductByCode(code) {
-    const [rows] = await pool.query('SELECT * FROM products WHERE code = ?', [code]);
-    return rows[0] || null;
-  },
+        const conn = await pool.getConnection()
 
-  async createProduct({ code, name, price, stock }) {
-    const [result] = await pool.query(
-      'INSERT INTO products (code, name, price, stock) VALUES (?, ?, ?, ?)',
-      [code, name, price, stock || 0]
-    );
-    return result.insertId;
-  },
+        try {
+            const [rows] = await conn.query(
+                'SELECT id, code, name, price, stock FROM products WHERE is_active = TRUE ORDER BY id'
+            )
 
-  // Aumentar/sumar inventario (stock_to_add)
-  async increaseStock(id, quantity) {
-    const [result] = await pool.query(
-      'UPDATE products SET stock = stock + ? WHERE id = ? AND is_active = TRUE',
-      [quantity, id]
-    );
-    return result.affectedRows > 0;
-  },
+            return rows
 
-  // Para establecer/fijar inventario directamente a un valor exacto 
-  async setStock(id, newStock) {
-    const [result] = await pool.query(
-      'UPDATE products SET stock = ? WHERE id = ? AND is_active = TRUE',
-      [newStock, id]
-    );
-    return result.affectedRows > 0;
-  }
-};
+        } finally {
+            conn.release()
+        }
+    }
+
+    static createProduct = async (product) => {
+
+        const conn = await pool.getConnection()
+
+        try {
+            const [result] = await conn.execute(
+                'INSERT INTO products (code, name, price, stock) VALUES (?, ?, ?, ?)',
+                [product.code, product.name, product.price, product.stock]
+            )
+
+            return { id: result.insertId, ...product, is_active: true }
+
+        } finally {
+            conn.release()
+        }
+    }
+
+  // Suma stock_to_add al stock actual (nunca resta: para eso existe la venta/anulación)
+    static increaseStock = async (id, stockToAdd) => {
+
+        const conn = await pool.getConnection()
+
+        try {
+            const [result] = await conn.execute(
+                'UPDATE products SET stock = stock + ? WHERE id = ?',
+                [stockToAdd, id]
+            )
+
+            if (result.affectedRows === 0) return null
+
+            const [rows] = await conn.execute(
+                'SELECT id, code, name, price, stock FROM products WHERE id = ?',
+                [id]
+            )
+
+            return rows[0]
+
+        } finally {
+            conn.release()
+        }
+    }
+}
+
