@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getProducts, createProduct, updateStock } from '../controllers/product.controller.js';
+import { getProducts, createProduct, updateStock, increaseStock } from '../controllers/product.controller.js';
 import { isAdmin } from '../middlewares/isAdmin.js';
 import { isAuth } from '../middlewares/isAuth.js';
 
@@ -12,6 +12,6 @@ Productrouter.get('/', getProducts);
 Productrouter.post('/', isAuth, isAdmin, createProduct);
 
 // PATCH - Aumentar inventario de un producto 
-Productrouter.patch('/:id/stock', isAuth, isAdmin, updateStock);
+Productrouter.patch('/:id/stock', isAuth, isAdmin, increaseStock);
 
 export default router;
