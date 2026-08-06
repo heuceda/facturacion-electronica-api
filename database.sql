@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- Script de creación de base de datos y tabla de productos.
 
 CREATE DATABASE IF NOT EXISTS facturacion_electronica_db;
@@ -14,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 `email` varchar(100) NOT NULL,
 `password_hash` varchar(255) NOT NULL,
 `role` ENUM (`CASHIER`, `ADMIN`) NOT NULL DEFAULT `CASHIER`,
-`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
