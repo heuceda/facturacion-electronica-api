@@ -14,4 +14,4 @@ Productrouter.post('/', isAuth, isAdmin, createProduct);
 // PATCH - Aumentar inventario de un producto 
 Productrouter.patch('/:id/stock', isAuth, isAdmin, increaseStock);
 
-export default router;
+export default Productrouter;
